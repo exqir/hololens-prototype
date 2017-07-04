@@ -32,7 +32,6 @@ public class MarkerManager : MonoBehaviour {
         CustomMessages.Instance.MessageHandlers[CustomMessages.TestMessageID.MarkerPosition] = this.OnMarkerInput;
         CustomMessages.Instance.MessageHandlers[CustomMessages.TestMessageID.MarkerHit] = this.OnMarkerHit;
 
-
     }
 
     // Update is called once per frame
@@ -48,7 +47,6 @@ public class MarkerManager : MonoBehaviour {
         {
             if (Input.GetMouseButtonDown(0))
             {
-                //CustomMessages.Instance.SendMarkerPosition(Input.mousePosition);
 
                 Debug.Log("Message Send");
 
@@ -81,17 +79,10 @@ public class MarkerManager : MonoBehaviour {
         Vector3 position;
 #if UNITY_EDITOR
         position = CustomMessages.Instance.ReadVector3(msg);
-
         CreateMarkerAtPosition(position);
-        //marker = Instantiate(Resources.Load("SpriteMarker")) as GameObject;
-        //marker.transform.parent = gameObject.transform;
-
-        //Debug.Log(position.ToString());
-        //marker.transform.localPosition = position;
         return;
 #endif
-        //position = CustomMessages.Instance.ReadVector3(msg);
-        //rayCast = Camera.main.ScreenPointToRay(position);
+
         rayCast = CustomMessages.Instance.ReadRay(msg);
         Debug.Log(rayCast.ToString());
 
@@ -107,16 +98,9 @@ public class MarkerManager : MonoBehaviour {
             }
         }
 
-        //rayCast = new Ray(Camera.main.ScreenToWorldPoint(position), Camera.main.transform.forward);
-
-        //Ray rayCast = Camera.main.ScreenPointToRay(position);
         if (Physics.Raycast(rayCast, out hitInfo, spatialMappingManager.PhysicsLayer))
         {
             marker = CreateMarkerAtPosition(hitInfo.point);
-            //marker = Instantiate(Resources.Load("SpriteMarker")) as GameObject;
-            //marker.transform.parent = gameObject.transform;
-            //marker.transform.localPosition = hitInfo.point;
-
             CustomMessages.Instance.SendMarkerPosition(hitInfo.point);
         }
         else

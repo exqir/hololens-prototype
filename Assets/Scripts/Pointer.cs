@@ -4,6 +4,7 @@ using UnityEngine;
 using HoloToolkit.Unity;
 using HoloToolkit.Unity.InputModule;
 using UnityEngine.VR.WSA;
+using HoloToolkit.Sharing.Tests;
 
 public class Pointer : MonoBehaviour, IInputClickHandler
 {
@@ -51,6 +52,7 @@ public class Pointer : MonoBehaviour, IInputClickHandler
 
     public void OnInputClicked(InputClickedEventData eventData)
     {
+        CustomMessages.Instance.SendMarkerHit(gameObject.transform.position);
         OnSelection();
     }
 
