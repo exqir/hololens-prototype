@@ -1,0 +1,91 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using HoloToolkit.Unity;
+using HoloToolkit.Unity.InputModule;
+using UnityEngine.VR.WSA;
+
+public class Pointer : MonoBehaviour, IInputClickHandler
+{
+    private int ttl = 300;
+
+    [Tooltip("Set Object to be permanent")]
+    public bool permanent = false;
+
+    GazeManager gazeManager;
+    WorldAnchorManager worldAnchorManager;
+
+
+    // Use this for initialization
+    void Start () {
+        gazeManager = GazeManager.Instance;
+        worldAnchorManager = WorldAnchorManager.Instance;
+        if (worldAnchorManager == null)
+        {
+            Debug.LogError("This script expects that you have a WorldAnchorManager component in your scene.");
+        }
+
+        if(permanent)
+        {
+            //SetColor(Color.red);
+        }
+    }
+	
+	// Update is called once per frame
+	void Update () {
+        if(!permanent)
+        {
+            ttl--;
+
+            if (ttl <= 0)
+            {
+                RemovePointer();
+            }
+            if (ttl < 100)
+            {
+                float alpha = ttl / 100;
+                //setAlphaTo(alpha);
+            }
+        }
+	}
+
+    public void OnInputClicked(InputClickedEventData eventData)
+    {
+        OnSelection();
+    }
+
+    public void OnSelection()
+    {
+        if (permanent)
+        {
+            RemovePointer();
+        }
+        else
+        {
+            permanent = true;
+            gameObject.GetComponent<SpriteRenderer>().color = new Color(0f, 255f, 0f);
+        }
+    }
+
+    private void RemovePointer()
+    {
+        if(worldAnchorManager != null && gameObject.GetComponent<WorldAnchor>() != null)
+        {
+            //worldAnchorManager.RemoveAnchor(gameObject);
+        }
+        Destroy(gameObject);
+    }
+
+    private void setAlphaTo(float alpha)
+    {
+        Renderer r = gameObject.GetComponent<Renderer>();
+        Color materialColor = r.material.color;
+        r.material.color = new Color(materialColor.r, materialColor.g, materialColor.b, alpha);
+    }
+
+    private void SetColor(Color color)
+    {
+        gameObject.transform.Rotate(0, 0, 45);
+        //gameObject.GetComponent<MeshRenderer>().material.SetColor("_Color", color);
+    }
+}
