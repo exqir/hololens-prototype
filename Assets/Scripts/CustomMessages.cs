@@ -142,13 +142,14 @@ namespace HoloToolkit.Sharing.Tests
             }
         }
 
-        public void SendMarkerPosition(Vector3 position)
+        public void SendMarkerPosition(Vector3 position, String idString)
         {
             if (serverConnection != null & serverConnection.IsConnected())
             {
                 NetworkOutMessage msg = CreateMessage((byte)TestMessageID.MarkerPosition);
 
                 AppendVector3(msg, position);
+                AppendString(msg, idString);
 
                 serverConnection.Broadcast(
                     msg,
@@ -174,13 +175,13 @@ namespace HoloToolkit.Sharing.Tests
             }
         }
 
-        public void SendMarkerHit(Vector3 position)
+        public void SendMarkerHit(String idString)
         {
             if (serverConnection != null & serverConnection.IsConnected())
             {
                 NetworkOutMessage msg = CreateMessage((byte)TestMessageID.MarkerPosition);
 
-                AppendVector3(msg, position);
+                AppendString(msg, idString);
 
                 serverConnection.Broadcast(
                     msg,
@@ -237,6 +238,11 @@ namespace HoloToolkit.Sharing.Tests
             msg.Write(rotation.w);
         }
 
+        private void AppendString(NetworkOutMessage msg, String idString)
+        {
+            msg.Write(idString);
+        }
+
         private void AppendRay(NetworkOutMessage msg, Ray ray)
         {
             AppendVector3(msg, ray.origin);
@@ -255,6 +261,11 @@ namespace HoloToolkit.Sharing.Tests
         public Quaternion ReadQuaternion(NetworkInMessage msg)
         {
             return new Quaternion(msg.ReadFloat(), msg.ReadFloat(), msg.ReadFloat(), msg.ReadFloat());
+        }
+
+        public String ReadString(NetworkInMessage msg)
+        {
+            return msg.ReadString();
         }
 
         public Ray ReadRay(NetworkInMessage msg)

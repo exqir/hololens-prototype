@@ -53,7 +53,7 @@ public class Pointer : MonoBehaviour, IInputClickHandler
 
     public void OnInputClicked(InputClickedEventData eventData)
     {
-        CustomMessages.Instance.SendMarkerHit(gameObject.transform.position);
+        CustomMessages.Instance.SendMarkerHit(gameObject.name);
         OnSelection();
     }
 

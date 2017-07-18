@@ -85,54 +85,57 @@ public class MarkerManager : MonoBehaviour {
         Vector3 position;
 #if UNITY_EDITOR
         position = CustomMessages.Instance.ReadVector3(msg);
-        CreateMarkerAtPosition(position);
+        String idString = CustomMessages.Instance.ReadString(msg);
+        CreateMarkerAtPosition(position, idString);
         return;
 #endif
 
         rayCast = CustomMessages.Instance.ReadRay(msg);
         Debug.Log(rayCast.ToString());
 
-        if (Physics.Raycast(rayCast, out hitInfo))
-        {
-            marker = hitInfo.collider != null ? hitInfo.collider.gameObject : null;
+        //if (Physics.Raycast(rayCast, out hitInfo))
+        //{
+        //    marker = hitInfo.collider != null ? hitInfo.collider.gameObject : null;
             
-            if(marker != null && marker.GetComponent<Pointer>() != null)
-            {
-                marker.GetComponent<Pointer>().OnSelection();
-                CustomMessages.Instance.SendMarkerHit(hitInfo.point);
-                return;
-            }
-        }
+        //    if(marker != null && marker.GetComponent<Pointer>() != null)
+        //    {
+        //        marker.GetComponent<Pointer>().OnSelection();
+        //        CustomMessages.Instance.SendMarkerHit(hitInfo.point);
+        //        return;
+        //    }
+        //}
 
         if (Physics.Raycast(rayCast, out hitInfo, spatialMappingManager.PhysicsLayer))
         {
-            marker = CreateMarkerAtPosition(hitInfo.point);
-            CustomMessages.Instance.SendMarkerPosition(hitInfo.point);
+            marker = CreateMarkerAtPosition(hitInfo.point, null);
+            CustomMessages.Instance.SendMarkerPosition(hitInfo.point, marker.name);
         }
         else
         {
             Vector3 originClippingPosition = new Vector3(rayCast.origin.x, rayCast.origin.y, Camera.main.nearClipPlane);
-            marker = CreateMarkerAtPosition(originClippingPosition);
-            CustomMessages.Instance.SendMarkerPosition(originClippingPosition);
+            marker = CreateMarkerAtPosition(originClippingPosition, null);
+            CustomMessages.Instance.SendMarkerPosition(originClippingPosition, marker.name);
         }
     }
 
     void OnMarkerHit(NetworkInMessage msg)
     {
         long userID = msg.ReadInt64();
-
-        Vector3 position = CustomMessages.Instance.ReadVector3(msg);
+        String idString = CustomMessages.Instance.ReadString(msg);
+        //Vector3 position = CustomMessages.Instance.ReadVector3(msg);
         GameObject marker = null;
 
-        Collider[] colliders;
-        if ((colliders = Physics.OverlapSphere(position, 1f /* Radius */)).Length > 1) //Presuming the object you are testing also has a collider 0 otherwise
-        {
-            foreach (var collider in colliders)
-            {
-                marker = collider.gameObject; //This is the game object you collided with
-                break; 
-            }
-        }
+        //Collider[] colliders;
+        //if ((colliders = Physics.OverlapSphere(position, 1f /* Radius */)).Length > 1) //Presuming the object you are testing also has a collider 0 otherwise
+        //{
+        //    foreach (var collider in colliders)
+        //    {
+        //        marker = collider.gameObject; //This is the game object you collided with
+        //        break; 
+        //    }
+        //}
+
+        marker = GameObject.Find(idString);
         if(marker != null && marker.GetComponent<Pointer>() != null)
         {
             marker.GetComponent<Pointer>().OnSelection();
