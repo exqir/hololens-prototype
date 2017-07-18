@@ -15,6 +15,7 @@ public class Pointer : MonoBehaviour, IInputClickHandler
 
     GazeManager gazeManager;
     WorldAnchorManager worldAnchorManager;
+    MarkerManager markerManager;
 
 
     // Use this for initialization
@@ -75,6 +76,17 @@ public class Pointer : MonoBehaviour, IInputClickHandler
         {
             //worldAnchorManager.RemoveAnchor(gameObject);
         }
+
+        markerManager = FindObjectOfType<MarkerManager>();
+
+        if(markerManager != null && markerManager.markerStore.Count > 1)
+        {
+            markerManager.markerStore.Remove(gameObject);
+
+            GameObject _thisMarker = markerManager.markerStore.Find(pointer => pointer.gameObject.name.Equals(this.gameObject.name));
+            markerManager.markerStore.Remove(_thisMarker);
+        }
+
         Destroy(gameObject);
     }
 

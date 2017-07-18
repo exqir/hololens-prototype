@@ -4,11 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using HoloToolkit.Sharing.Tests;
 using HoloToolkit.Sharing;
+using System;
+using HoloToolkit.Unity;
 
 public class MarkerManager : MonoBehaviour {
 
     public bool markerPlacementMode;
     public bool guiHit;
+
+    public List<GameObject> markerStore;
+    int storeSize = 25;
 
     bool spatialHit;
     RaycastHit hitInfo;
@@ -25,6 +30,7 @@ public class MarkerManager : MonoBehaviour {
     void Start () {
         markerPlacementMode = false;
         guiHit = false;
+        markerStore = new List<GameObject>();
 
         spatialMappingManager = SpatialMappingManager.Instance;
 
@@ -138,12 +144,13 @@ public class MarkerManager : MonoBehaviour {
         guiHit = false;
     }
 
-    private GameObject CreateMarkerAtPosition(Vector3 position)
+    private GameObject CreateMarkerAtPosition(Vector3 position, String idString)
     {
         GameObject marker = Instantiate(Resources.Load("SpriteMarker")) as GameObject;
         marker.transform.parent = gameObject.transform;
         marker.transform.localPosition = position;
         SetRotationOfMarker(marker);
+        AddMarkerToStore(marker, idString);
         return marker;
     }
 
@@ -154,5 +161,12 @@ public class MarkerManager : MonoBehaviour {
         cameraRotation.z = 0;
         pointer.transform.rotation = cameraRotation;
         pointer.transform.Rotate(new Vector3(0, 0, 180f));
+    }
+
+    private void AddMarkerToStore(GameObject pointer, String idString)
+    {
+        if(idString == null) idString = new DateTime().ToShortTimeString();
+        pointer.name = "Marker_" + idString;
+        this.markerStore.Add(pointer);
     }
 }

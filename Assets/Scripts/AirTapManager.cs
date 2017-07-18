@@ -115,7 +115,6 @@ public class AirTapManager : Singleton<AirTapManager>, IInputClickHandler
         pointer = Instantiate(Resources.Load("SpriteMarker")) as GameObject;
         markerCount += 1;
         SetPositionOfMarker(point);
-        //FixMarkerInWorld();
         CustomMessages.Instance.SendMarkerPosition(point);
 
     }
@@ -124,7 +123,6 @@ public class AirTapManager : Singleton<AirTapManager>, IInputClickHandler
     {
         pointer.transform.position = point;
         pointer.transform.Translate(new Vector3(0f, -0.05f, 0f));
-        //pointer.transform.localScale = new Vector3(4f, 4f, 4f);
 
         Quaternion cameraRotation = Camera.main.transform.localRotation;
         cameraRotation.x = 0;
