@@ -46,7 +46,6 @@ public class Pointer : MonoBehaviour, IInputClickHandler
             if (ttl < 100)
             {
                 float alpha = ttl / 100;
-                //setAlphaTo(alpha);
             }
         }
 	}
@@ -90,16 +89,8 @@ public class Pointer : MonoBehaviour, IInputClickHandler
         Destroy(gameObject);
     }
 
-    private void setAlphaTo(float alpha)
+    public void SetColor(Color color)
     {
-        Renderer r = gameObject.GetComponent<Renderer>();
-        Color materialColor = r.material.color;
-        r.material.color = new Color(materialColor.r, materialColor.g, materialColor.b, alpha);
-    }
-
-    private void SetColor(Color color)
-    {
-        gameObject.transform.Rotate(0, 0, 45);
-        //gameObject.GetComponent<MeshRenderer>().material.SetColor("_Color", color);
+        gameObject.GetComponent<SpriteRenderer>().color = color;
     }
 }

@@ -142,7 +142,7 @@ namespace HoloToolkit.Sharing.Tests
             }
         }
 
-        public void SendMarkerPosition(Vector3 position, String idString)
+        public void SendMarkerPosition(Vector3 position, String idString, String remoteString)
         {
             if (serverConnection != null & serverConnection.IsConnected())
             {
@@ -150,6 +150,7 @@ namespace HoloToolkit.Sharing.Tests
 
                 AppendVector3(msg, position);
                 AppendString(msg, idString);
+                AppendString(msg, remoteString);
 
                 serverConnection.Broadcast(
                     msg,

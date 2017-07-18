@@ -84,10 +84,12 @@ public class MarkerManager : MonoBehaviour {
 
         GameObject marker;
         Vector3 position;
+        String remoteString;
 #if UNITY_EDITOR
         position = CustomMessages.Instance.ReadVector3(msg);
         String idString = CustomMessages.Instance.ReadString(msg);
-        CreateMarkerAtPosition(position, idString);
+        remoteString = CustomMessages.Instance.ReadString(msg);
+        CreateMarkerAtPosition(position, idString, remoteString);
         return;
 #endif
 
@@ -108,14 +110,14 @@ public class MarkerManager : MonoBehaviour {
 
         if (Physics.Raycast(rayCast, out hitInfo, spatialMappingManager.PhysicsLayer))
         {
-            marker = CreateMarkerAtPosition(hitInfo.point, null);
-            CustomMessages.Instance.SendMarkerPosition(hitInfo.point, marker.name);
+            marker = CreateMarkerAtPosition(hitInfo.point, null, "remote");
+            CustomMessages.Instance.SendMarkerPosition(hitInfo.point, marker.name, "remote");
         }
         else
         {
             Vector3 originClippingPosition = new Vector3(rayCast.origin.x, rayCast.origin.y, Camera.main.nearClipPlane);
-            marker = CreateMarkerAtPosition(originClippingPosition, null);
-            CustomMessages.Instance.SendMarkerPosition(originClippingPosition, marker.name);
+            marker = CreateMarkerAtPosition(originClippingPosition, null, "remote");
+            CustomMessages.Instance.SendMarkerPosition(originClippingPosition, marker.name, "remote");
         }
     }
 
@@ -148,13 +150,14 @@ public class MarkerManager : MonoBehaviour {
         guiHit = false;
     }
 
-    private GameObject CreateMarkerAtPosition(Vector3 position, String idString)
+    private GameObject CreateMarkerAtPosition(Vector3 position, String idString, String remoteString)
     {
         GameObject marker = Instantiate(Resources.Load("SpriteMarker")) as GameObject;
         marker.transform.parent = gameObject.transform;
         marker.transform.localPosition = position;
         SetRotationOfMarker(marker);
         AddMarkerToStore(marker, idString);
+        if(remoteString.Equals("remote")) { marker.GetComponent<Pointer>().SetColor(new Color(255f,0,0)};
         return marker;
     }
 
