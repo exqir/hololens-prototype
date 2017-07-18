@@ -460,11 +460,11 @@ namespace HoloToolkit.Unity
         }
 
 #if UNITY_EDITOR
-        [ContextMenu("Sort Events")]
-        private void AlphabetizeEventList()
-        {
-            Array.Sort<AudioEvent>(events);
-        }
+        //[ContextMenuItem("Sort Events", UAudioManager.AlphabetizeEventList())]
+        //private void AlphabetizeEventList()
+        //{
+        //    Array.Sort<AudioEvent>(events);
+        //}
 #endif
     }
 }
