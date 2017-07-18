@@ -8,6 +8,7 @@ using HoloToolkit.Unity.InputModule;
 using UnityEngine.VR.WSA;
 using HoloToolkit.Sharing.Tests;
 using HoloToolkit.Sharing;
+using System;
 
 public class AirTapManager : Singleton<AirTapManager>, IInputClickHandler
 {
@@ -115,7 +116,7 @@ public class AirTapManager : Singleton<AirTapManager>, IInputClickHandler
         pointer = Instantiate(Resources.Load("SpriteMarker")) as GameObject;
         markerCount += 1;
         SetPositionOfMarker(point);
-        CustomMessages.Instance.SendMarkerPosition(point);
+        CustomMessages.Instance.SendMarkerPosition(point, "Marker_" + new DateTime().ToShortTimeString());
 
     }
 

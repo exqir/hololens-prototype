@@ -179,7 +179,7 @@ namespace HoloToolkit.Sharing.Tests
         {
             if (serverConnection != null & serverConnection.IsConnected())
             {
-                NetworkOutMessage msg = CreateMessage((byte)TestMessageID.MarkerPosition);
+                NetworkOutMessage msg = CreateMessage((byte)TestMessageID.MarkerHit);
 
                 AppendString(msg, idString);
 

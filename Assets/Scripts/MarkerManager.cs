@@ -67,6 +67,7 @@ public class MarkerManager : MonoBehaviour {
                     {
                         Debug.Log("Hit Pointer GameObject");
                         marker.GetComponent<Pointer>().OnSelection();
+                        CustomMessages.Instance.SendMarkerHit(marker.name);
                         return;
                     }
                 }
