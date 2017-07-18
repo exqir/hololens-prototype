@@ -116,7 +116,7 @@ public class AirTapManager : Singleton<AirTapManager>, IInputClickHandler
         pointer = Instantiate(Resources.Load("SpriteMarker")) as GameObject;
         markerCount += 1;
         SetPositionOfMarker(point);
-        CustomMessages.Instance.SendMarkerPosition(point, "Marker_" + new DateTime().ToShortTimeString(), "holo");
+        CustomMessages.Instance.SendMarkerPosition(point, "Marker_" + new DateTime().ToString(), "holo");
 
     }
 

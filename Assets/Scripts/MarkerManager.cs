@@ -172,7 +172,7 @@ public class MarkerManager : MonoBehaviour {
 
     private void AddMarkerToStore(GameObject pointer, String idString)
     {
-        if(idString == null) idString = new DateTime().ToShortTimeString();
+        if(idString == null) idString = new DateTime().ToString();
         pointer.name = "Marker_" + idString;
         this.markerStore.Add(pointer);
     }
