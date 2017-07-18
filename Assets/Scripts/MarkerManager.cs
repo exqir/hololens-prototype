@@ -157,7 +157,7 @@ public class MarkerManager : MonoBehaviour {
         marker.transform.localPosition = position;
         SetRotationOfMarker(marker);
         AddMarkerToStore(marker, idString);
-        if(remoteString.Equals("remote")) { marker.GetComponent<Pointer>().SetColor(new Color(255f,0,0)};
+        if(remoteString.Equals("remote")) { marker.GetComponent<Pointer>().SetColor(new Color(255f, 0, 0)); };
         return marker;
     }
 
