@@ -80,10 +80,10 @@ public class Pointer : MonoBehaviour, IInputClickHandler
 
         if(markerManager != null && markerManager.markerStore.Count > 1)
         {
-            markerManager.markerStore.Remove(gameObject);
+            //markerManager.markerStore.Remove(gameObject);
 
-            GameObject _thisMarker = markerManager.markerStore.Find(pointer => pointer.gameObject.name.Equals(this.gameObject.name));
-            markerManager.markerStore.Remove(_thisMarker);
+            //GameObject _thisMarker = markerManager.markerStore.Find(pointer => pointer.gameObject.name.Equals(this.gameObject.name));
+            //markerManager.markerStore.Remove(_thisMarker);
         }
 
         Destroy(gameObject);

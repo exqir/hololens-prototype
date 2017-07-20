@@ -125,6 +125,7 @@ public class MarkerManager : MonoBehaviour {
     {
         long userID = msg.ReadInt64();
         String idString = CustomMessages.Instance.ReadString(msg);
+        Debug.Log(idString);
         //Vector3 position = CustomMessages.Instance.ReadVector3(msg);
         GameObject marker = null;
 
@@ -134,12 +135,12 @@ public class MarkerManager : MonoBehaviour {
         //    foreach (var collider in colliders)
         //    {
         //        marker = collider.gameObject; //This is the game object you collided with
-        //        break; 
+        //        break;
         //    }
         //}
 
         marker = GameObject.Find(idString);
-        if(marker != null && marker.GetComponent<Pointer>() != null)
+        if (marker != null && marker.GetComponent<Pointer>() != null)
         {
             marker.GetComponent<Pointer>().OnSelection();
         }
@@ -172,8 +173,12 @@ public class MarkerManager : MonoBehaviour {
 
     private void AddMarkerToStore(GameObject pointer, String idString)
     {
-        if(idString == null) idString = new DateTime().ToString();
-        pointer.name = "Marker_" + idString;
+        if (idString == null)
+        {
+            idString = new DateTime().ToString();
+            pointer.name = "Marker_" + idString;
+        }
+        Debug.Log(pointer.name);
         this.markerStore.Add(pointer);
     }
 }

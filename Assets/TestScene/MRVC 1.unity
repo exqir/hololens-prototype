@@ -832,7 +832,7 @@ Prefab:
     - target: {fileID: 114000012667812730, guid: 8aaf37823b26ee449bb3b3d7775965c3,
         type: 2}
       propertyPath: ServerAddress
-      value: 141.99.199.78
+      value: 141.99.199.214
       objectReference: {fileID: 0}
     - target: {fileID: 114000012667812730, guid: 8aaf37823b26ee449bb3b3d7775965c3,
         type: 2}
@@ -1312,6 +1312,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   markerPlacementMode: 0
+  guiHit: 0
+  markerStore: []
 --- !u!4 &1006673557
 Transform:
   m_ObjectHideFlags: 0
@@ -1397,6 +1399,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   markerPlacementMode: 0
+  guiHit: 0
+  markerStore: []
 --- !u!114 &1026268521
 MonoBehaviour:
   m_ObjectHideFlags: 0
