@@ -70,9 +70,10 @@ public class MarkerManager : Singleton<MarkerManager> {
                         CustomMessages.Instance.SendMarkerHit(marker.name);
                         return;
                     }
+                } else
+                {
+                    CustomMessages.Instance.SendMarkerRay(rayCast);
                 }
-
-                CustomMessages.Instance.SendMarkerRay(Camera.main.ScreenPointToRay(Input.mousePosition));
             }
         }
 #endif

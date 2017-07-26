@@ -7,12 +7,18 @@ using System.Collections;
 public class GuiButtons : MonoBehaviour
 {
     public bool showUI = false;
+    MarkerManager markerManager;
 
     public MixedRemoteViewCompositor.MrvcManager manager = null;
 
     void Awake()
     {
         this.manager = FindObjectOfType<MixedRemoteViewCompositor.MrvcManager>();
+    }
+
+    private void Start()
+    {
+        markerManager = MarkerManager.Instance;
     }
 
     void OnGUI()
@@ -50,7 +56,7 @@ public class GuiButtons : MonoBehaviour
 
             if (GUI.Button(new Rect(10, y, 150, 30), string.Format("Marker Mode")))
             {
-                FindObjectOfType<MarkerManager>().markerPlacementMode = !FindObjectOfType<MarkerManager>().markerPlacementMode;
+                markerManager.markerPlacementMode = !markerManager.markerPlacementMode;
                 GuiClicked();
             }
         }
@@ -59,7 +65,7 @@ public class GuiButtons : MonoBehaviour
 
     private void GuiClicked()
     {
-        FindObjectOfType<MarkerManager>().guiHit = true;
+        markerManager.guiHit = true;
     }
 
 }

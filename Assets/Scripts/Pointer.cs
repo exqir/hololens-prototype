@@ -22,6 +22,7 @@ public class Pointer : MonoBehaviour, IInputClickHandler
     void Start () {
         gazeManager = GazeManager.Instance;
         worldAnchorManager = WorldAnchorManager.Instance;
+        markerManager = MarkerManager.Instance;
         if (worldAnchorManager == null)
         {
             Debug.LogError("This script expects that you have a WorldAnchorManager component in your scene.");
@@ -76,9 +77,7 @@ public class Pointer : MonoBehaviour, IInputClickHandler
             //worldAnchorManager.RemoveAnchor(gameObject);
         }
 
-        markerManager = FindObjectOfType<MarkerManager>();
-
-        if(markerManager != null && markerManager.markerStore.Count > 1)
+        if(markerManager != null && markerManager.markerStore.Count > 0)
         {
             //markerManager.markerStore.Remove(gameObject);
 
