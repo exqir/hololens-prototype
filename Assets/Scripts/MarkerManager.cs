@@ -7,7 +7,7 @@ using HoloToolkit.Sharing;
 using System;
 using HoloToolkit.Unity;
 
-public class MarkerManager : MonoBehaviour {
+public class MarkerManager : Singleton<MarkerManager> {
 
     public bool markerPlacementMode;
     public bool guiHit;
@@ -84,12 +84,13 @@ public class MarkerManager : MonoBehaviour {
 
         GameObject marker;
         Vector3 position;
-        String remoteString;
+        //String owner;
 #if UNITY_EDITOR
         position = CustomMessages.Instance.ReadVector3(msg);
         String idString = CustomMessages.Instance.ReadString(msg);
-        remoteString = CustomMessages.Instance.ReadString(msg);
-        CreateMarkerAtPosition(position, idString, remoteString);
+        String owner = CustomMessages.Instance.ReadString(msg);
+        //CreateMarkerAtPosition(position, idString, owner);
+        CreateMarker(position, idString, owner, false, false);
         return;
 #endif
 
@@ -110,14 +111,16 @@ public class MarkerManager : MonoBehaviour {
 
         if (Physics.Raycast(rayCast, out hitInfo, spatialMappingManager.PhysicsLayer))
         {
-            marker = CreateMarkerAtPosition(hitInfo.point, null, "remote");
-            CustomMessages.Instance.SendMarkerPosition(hitInfo.point, marker.name, "remote");
+            //marker = CreateMarkerAtPosition(hitInfo.point, null, "remote");
+            marker = CreateMarker(hitInfo.point, null, "remote");
+            //CustomMessages.Instance.SendMarkerPosition(hitInfo.point, marker.name, "remote");
         }
         else
         {
             Vector3 originClippingPosition = new Vector3(rayCast.origin.x, rayCast.origin.y, Camera.main.nearClipPlane);
-            marker = CreateMarkerAtPosition(originClippingPosition, null, "remote");
-            CustomMessages.Instance.SendMarkerPosition(originClippingPosition, marker.name, "remote");
+            marker = CreateMarker(originClippingPosition, null, "remote");
+            //marker = CreateMarkerAtPosition(originClippingPosition, null, "remote");
+            //CustomMessages.Instance.SendMarkerPosition(originClippingPosition, marker.name, "remote");
         }
     }
 
@@ -151,14 +154,30 @@ public class MarkerManager : MonoBehaviour {
         guiHit = false;
     }
 
-    private GameObject CreateMarkerAtPosition(Vector3 position, String idString, String remoteString)
+    //private GameObject CreateMarkerAtPosition(Vector3 position, String idString, String remoteString)
+    //{
+    //    GameObject marker = Instantiate(Resources.Load("SpriteMarker")) as GameObject;
+    //    marker.transform.parent = gameObject.transform;
+    //    marker.transform.localPosition = position;
+    //    SetRotationOfMarker(marker);
+    //    AddMarkerToStore(marker, idString);
+    //    if(remoteString.Equals("remote")) { marker.GetComponent<Pointer>().SetColor(new Color(255f, 0, 0)); };
+    //    return marker;
+    //}
+
+    public GameObject CreateMarker(Vector3 position, String idString, String owner, Boolean offset = true, Boolean send = true)
     {
         GameObject marker = Instantiate(Resources.Load("SpriteMarker")) as GameObject;
         marker.transform.parent = gameObject.transform;
         marker.transform.localPosition = position;
+        if (offset)
+        {
+            marker.transform.Translate(new Vector3(0f, -0.05f, 0f));
+        }
         SetRotationOfMarker(marker);
         AddMarkerToStore(marker, idString);
-        if(remoteString.Equals("remote")) { marker.GetComponent<Pointer>().SetColor(new Color(255f, 0, 0)); };
+        if (owner.Equals("remote")) marker.GetComponent<Pointer>().SetColor(new Color(255f, 0, 0));
+        if (send) CustomMessages.Instance.SendMarkerPosition(marker.transform.position, marker.name, owner);
         return marker;
     }
 
@@ -177,8 +196,10 @@ public class MarkerManager : MonoBehaviour {
         {
             idString = new DateTime().ToString();
             pointer.name = "Marker_" + idString;
+        } else
+        {
+            pointer.name = idString;
         }
-        Debug.Log(pointer.name);
         this.markerStore.Add(pointer);
     }
 }
