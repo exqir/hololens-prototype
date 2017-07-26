@@ -65,10 +65,9 @@ public class MarkerManager : Singleton<MarkerManager> {
 
                     if (marker != null && marker.GetComponent<Pointer>() != null)
                     {
-                        Debug.Log("Hit Pointer GameObject:" + marker.name);
-                        // Should be handled by On InputClicked method of Pointer.cs
-                        //marker.GetComponent<Pointer>().OnSelection();
-                        //CustomMessages.Instance.SendMarkerHit(marker.name);
+                        Debug.Log("Hit Pointer GameObject");
+                        marker.GetComponent<Pointer>().OnSelection();
+                        CustomMessages.Instance.SendMarkerHit(marker.name);
                         return;
                     }
                 } else
