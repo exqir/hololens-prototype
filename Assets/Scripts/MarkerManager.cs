@@ -53,9 +53,6 @@ public class MarkerManager : Singleton<MarkerManager> {
         {
             if (Input.GetMouseButtonDown(0))
             {
-
-                Debug.Log("Message Send");
-
                 Ray rayCast = Camera.main.ScreenPointToRay(Input.mousePosition);
                 GameObject marker;
 
@@ -73,6 +70,7 @@ public class MarkerManager : Singleton<MarkerManager> {
                     }
                 } else
                 {
+                    Debug.Log("Send Ray");
                     CustomMessages.Instance.SendMarkerRay(rayCast);
                 }
             }
