@@ -15,12 +15,14 @@ public class Pointer : MonoBehaviour, IInputClickHandler
 
     GazeManager gazeManager;
     WorldAnchorManager worldAnchorManager;
+    MarkerManager markerManager;
 
 
     // Use this for initialization
     void Start () {
         gazeManager = GazeManager.Instance;
         worldAnchorManager = WorldAnchorManager.Instance;
+        markerManager = MarkerManager.Instance;
         if (worldAnchorManager == null)
         {
             Debug.LogError("This script expects that you have a WorldAnchorManager component in your scene.");
@@ -45,14 +47,13 @@ public class Pointer : MonoBehaviour, IInputClickHandler
             if (ttl < 100)
             {
                 float alpha = ttl / 100;
-                //setAlphaTo(alpha);
             }
         }
 	}
 
     public void OnInputClicked(InputClickedEventData eventData)
     {
-        CustomMessages.Instance.SendMarkerHit(gameObject.transform.position);
+        CustomMessages.Instance.SendMarkerHit(gameObject.name);
         OnSelection();
     }
 
@@ -75,19 +76,20 @@ public class Pointer : MonoBehaviour, IInputClickHandler
         {
             //worldAnchorManager.RemoveAnchor(gameObject);
         }
+
+        if(markerManager != null && markerManager.markerStore.Count > 0)
+        {
+            //markerManager.markerStore.Remove(gameObject);
+
+            GameObject _thisMarker = markerManager.markerStore.Find(pointer => pointer.name.Equals(this.gameObject.name));
+            if(_thisMarker != null) markerManager.markerStore.Remove(_thisMarker);
+        }
+
         Destroy(gameObject);
     }
 
-    private void setAlphaTo(float alpha)
+    public void SetColor(Color color)
     {
-        Renderer r = gameObject.GetComponent<Renderer>();
-        Color materialColor = r.material.color;
-        r.material.color = new Color(materialColor.r, materialColor.g, materialColor.b, alpha);
-    }
-
-    private void SetColor(Color color)
-    {
-        gameObject.transform.Rotate(0, 0, 45);
-        //gameObject.GetComponent<MeshRenderer>().material.SetColor("_Color", color);
+        gameObject.GetComponent<SpriteRenderer>().color = color;
     }
 }
